@@ -19,6 +19,7 @@ var connect = mongoose.connect('mongodb://127.0.0.1:27017/shopping', {useMongoCl
 autoIncrement.initialize(connect);
 
 var admin = require('./routes/admin');
+var accounts = require('./routes/accounts');
 
 var app = express();
 var port = 3000;
@@ -38,6 +39,7 @@ app.get('/', function(req,res){
 });
 
 app.use('/admin', admin);
+app.use('/accounts', accounts);
 
 app.listen( port, function(){
     console.log('Express listening on port', port);
