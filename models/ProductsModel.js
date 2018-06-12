@@ -4,10 +4,13 @@ var autoIncrement = require('mongoose-auto-increment');
 
 
 var ProductsSchema = new Schema({
-    name : String, 
-    price : Number,
-    description : String, 
-    created_at : { 
+    name : { //제품명
+        type : String,
+        required: [true, '제목은 입력해주세요']
+    }, 
+    price : Number, //가격
+    description : String, //설명
+    created_at : { //작성일
         type : Date,
         default : Date.now()
     }
