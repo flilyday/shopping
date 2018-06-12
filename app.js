@@ -5,6 +5,11 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
+var flash = require('connect-flash');
+
+var passport = require('passport');
+var session = require('express-session');
+
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var autoIncrement = require('mongoose-auto-increment');
@@ -34,6 +39,22 @@ app.use(cookieParser());
 
 app.use('/uploads', express.static('uploads'));
 
+//session 관련 셋팅
+app.use(session({
+    secret: 'fastcampus',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 2000 * 60 * 60 //지속시간 2시간
+    }
+}));
+
+//passport 적용
+app.use(passport.initialize());
+app.use(passport.session());
+
+//플래시 메시지 관련
+app.use(flash());
 app.get('/', function(req,res){
     res.send('first app');
 });
