@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var csrf = require('csurf');
+var csrfProtection = csrf({ cookie : true })
 var ProductsModel = require('../models/ProductsModel');
 var CommentsModel = require('../models/CommentsModel');
+
 
 router.get('/', function(req,res){
     res.send('admin app');
@@ -15,12 +18,12 @@ router.get('/products', function(req,res){
     });
 });
 
-router.get('/products/write', function(req,res){
+router.get('/products/write', csrfProtection, function(req,res){
     //edit에서도 같은 form을 사용하므로 빈 변수( product )를 넣어서 에러를 피해준다
-    res.render( 'admin/form' , { product : "" }); 
+    res.render( 'admin/form' , { product : "", csrfToken : req.csrfToken() }); 
 });
 
-router.post('/products/write', function(req,res){
+router.post('/products/write', csrfProtection, function(req,res){
     var product = new ProductsModel({
         name : req.body.name,
         price : req.body.price,
@@ -36,7 +39,7 @@ router.post('/products/write', function(req,res){
     }
 });
 
-router.get('/products/detail/:id' , function(req, res){
+router.get('/products/detail/:id', function(req, res){
     //url 에서 변수 값을 받아올떈 req.params.id 로 받아온다
     ProductsModel.findOne( { 'id' :  req.params.id } , function(err ,product){
         //제품정보를 받고 그안에서 댓글을 받아온다.
@@ -46,14 +49,14 @@ router.get('/products/detail/:id' , function(req, res){
     });
 });
 
-router.get('/products/edit/:id' ,function(req, res){
+router.get('/products/edit/:id', csrfProtection, function(req, res){
     //기존에 폼에 value안에 값을 셋팅하기 위해 만든다.
     ProductsModel.findOne({ id : req.params.id } , function(err, product){
-        res.render('admin/form', { product : product });
+        res.render('admin/form', { product : product, csrfToken : req.csrfToken() });
     });
 });
 
-router.post('/products/edit/:id', function(req, res){
+router.post('/products/edit/:id', csrfProtection,  function(req, res){
     //넣을 변수 값을 셋팅한다
     var query = {
         name : req.body.name,
