@@ -14,9 +14,9 @@ passport.deserializeUser(function (user, done) {
 
 passport.use(new FacebookStrategy({
         // https://developers.facebook.com에서 appId 및 scretID 발급
-        clientID: "1622122741189968", //입력하세요
-        clientSecret: "86f0e193916baa03ecbe59e9d07e58c6", //입력하세요.
-        callbackURL: "https://localhost:3000/auth/facebook/callback",
+        clientID: "앱 ID 입력", //입력하세요
+        clientSecret: "앱 시크릿 코드 입력", //입력하세요.
+        callbackURL: "http://localhost:3000/auth/facebook/callback",
         profileFields: ['id', 'displayName', 'photos', 'email'] //받고 싶은 필드 나열
     },
     function(accessToken, refreshToken, profile, done) {
