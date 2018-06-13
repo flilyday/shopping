@@ -16,13 +16,17 @@
                 <%=product.getDate.month%> -
                 <%=product.getDate.day%>
             </td>
-           <td>
-	          <a href="/admin/products/delete/<%=product.id%>" class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+            <td>
+                <a href="/admin/products/delete/<%=product.id%>" class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
             </td>
         </tr>
         <%});%>
     </table>
-
-    <a href="/admin/products/write" class="btn btn-default">작성하기</a>
+    <%if(isLogin){%>
+        <a href="/admin/products/write" class="btn btn-default">작성하기</a>
+    <%}else{%>
+        <a href="/accounts/login" class="btn btn-primary">글작성하기</a>
+    <%}%>
+    
 
 <% include ../footer.ejs %>

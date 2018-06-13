@@ -25,6 +25,8 @@ autoIncrement.initialize(connect);
 
 var admin = require('./routes/admin');
 var accounts = require('./routes/accounts');
+var auth = require('./routes/auth');
+var home = require('./routes/home')
 
 var app = express();
 var port = 3000;
@@ -55,9 +57,6 @@ app.use(passport.session());
 
 //플래시 메시지 관련
 app.use(flash());
-app.get('/', function(req,res){
-    res.send('first app');
-});
 
 app.use(function(req, res, next) {
     app.locals.isLogin = req.isAuthenticated();
@@ -65,8 +64,11 @@ app.use(function(req, res, next) {
     //app.locals.userData = req.user; //사용 정보를 보내고 싶으면 이와같이 셋팅
     next();
   });
+
 app.use('/admin', admin);
 app.use('/accounts', accounts);
+app.use('/auth', auth);
+app.use('/', home)
 
 app.listen( port, function(){
     console.log('Express listening on port', port);
