@@ -23,6 +23,7 @@ passport.use(new LocalStrategy({
         passReqToCallback : true
     }, 
     function (req, username, password, done) {
+        console.log(req)
         UserModel.findOne({ username : username , password : passwordHash(password) }, function (err,user) {
             if (!user){
                 return done(null, false, { message: '아이디 또는 비밀번호 오류 입니다.' });
