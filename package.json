@@ -17,6 +17,7 @@
     "csurf": "^1.9.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
+    "express-paginate": "^1.0.0",
     "express-session": "^1.15.6",
     "mongodb": "^3.0.10",
     "mongoose": "^4.11.2",

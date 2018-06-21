@@ -22,16 +22,28 @@ var CommentsModel = require('../models/CommentsModel');
 var loginRequired = require('../libs/loginRequired');
 var co = require('co');
 
+var paginate = require('express-paginate')
+
 router.get('/', function(req,res){
     res.send('admin app');
 });
 
-router.get('/products', function(req,res){
-    ProductsModel.find( function(err,products){ //첫번째 인자는 err, 두번째는 받을 변수명
-        res.render( 'admin/products' , 
-            { products : products } // DB에서 받은 products를 products변수명으로 내보냄
-        );
+router.get('/products', paginate.middleware(5, 50), async (req,res) => {
+
+    const [ results, itemCount ] = await Promise.all([
+        ProductsModel.find().limit(req.query.limit).skip(req.skip).exec(),
+        ProductsModel.count({})
+    ]);
+    const pageCount = Math.ceil(itemCount / req.query.limit);
+    
+    const pages = paginate.getArrayPages(req)( 5 , pageCount, req.query.page);
+
+    res.render('admin/products', { 
+        products : results , 
+        pages: pages,
+        pageCount : pageCount,
     });
+
 });
 
 router.get('/products/write', loginRequired, csrfProtection, function(req,res){
